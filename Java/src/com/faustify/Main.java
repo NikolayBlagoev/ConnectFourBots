@@ -21,7 +21,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         String inp = sc.nextLine().toLowerCase();
         boolean starF = false;
-        if(inp.equals("n")){
+        if(inp.equals("y")){
             starF = true;
         }
         ConnectFourBot conFourBot = new SmartBot(starF);
