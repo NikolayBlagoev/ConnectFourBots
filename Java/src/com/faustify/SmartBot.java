@@ -73,13 +73,9 @@ public class SmartBot implements ConnectFourBot{
     }
 
     private boolean victoryCheckerHelper(ResponseCountDiscs r2, ResponseCountDiscs r3, int disc){
-        if(r2.getDisc()==r3.getDisc()){
-            if(r2.getCount()+r3.getCount() >= 4){
-                return true;
-            }
-            if(r2.getCount()+r3.getCount() == 3 && r2.getDisc()==disc){
-                return true;
-            }
+        if(r2.getDisc()==r3.getDisc() && r2.getDisc()==disc){
+            return r2.getCount() + r3.getCount() >= 4 || r2.getCount() + r3.getCount() == 3;
+
         }else{
             if(r2.getCount()>=4||r3.getCount() >= 4){
                 return true;
