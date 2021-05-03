@@ -6,13 +6,13 @@ public class SmartBot implements ConnectFourBot{
     private boolean GameOver = false;
     private int gameConclusion = -2;
     private final int SCORE_FOR_2_YOUR_OWN = 1;
-    private final int SCORE_FOR_3_YOUR_OWN = 5;
-    private final int SCORE_FOR_2_OPPONENT = 2;
-    private final int SCORE_FOR_3_OPPONENT = 6;
+    private final int SCORE_FOR_3_YOUR_OWN = 7;
+    private final int SCORE_FOR_2_OPPONENT = 4;
+    private final int SCORE_FOR_3_OPPONENT = 15;
     private final int SCORE_FOR_WINNING = Integer.MAX_VALUE;
     private final int SCORE_FOR_PREVENTING_LOSS = 10000;
     private final int SCORE_FOR_CAUSING_LOSS_NEXT_TURN = -1000;
-    private final int SCORE_FOR_MIDDLE = 6;
+    private final int SCORE_FOR_MIDDLE = 10;
     private final int SCORE_FOR_SECOND_TO_MIDDLE = 2;
 
     /**
@@ -112,7 +112,9 @@ public class SmartBot implements ConnectFourBot{
         for(int i = 0; i < 7; i++){
             putY = validY(i);
             if(putY!=-1){
+                System.out.println("--------------- "+ (i+1)+" --------------");
                 Response r = getScore(putY, i, 2, 1);
+                System.out.println((i+1)+" has score "+r.getScore());
                 if(r.isCanWin()){
                     board[putY][i]=2;
                     GameOver = true;
@@ -229,7 +231,7 @@ public class SmartBot implements ConnectFourBot{
         Response r = getScoreHelper(getCount(-1, 0, y, x), disc, x);
         if(r.isCanWin()) return r;
         score += r.getScore();
-
+        System.out.println("DOWN SCORE "+r.getScore());
         // Diagonal 1 check
         ResponseCountDiscs r2 = getCount(-1, -1, y, x);
         ResponseCountDiscs r3 = getCount(+1, +1, y, x);
@@ -237,14 +239,17 @@ public class SmartBot implements ConnectFourBot{
             r = getScoreHelper(new ResponseCountDiscs(r2.getDisc(), r2.getCount()+r3.getCount()), disc, x);
             if(r.isCanWin()) return r;
             score += r.getScore();
+            System.out.println("DIAGONAL 1 "+r.getScore());
         }else{
             r = getScoreHelper(r2, disc, x);
             if(r.isCanWin()) return r;
             score += r.getScore();
+            int buff = r.getScore();
 
             r = getScoreHelper(r3, disc, x);
             if(r.isCanWin()) return r;
             score += r.getScore();
+            System.out.println("DIAGONAL 1 "+(buff+r.getScore()));
         }
         // Diagonal 2 check
         r2 = getCount(+1, -1, y, x);
@@ -253,14 +258,16 @@ public class SmartBot implements ConnectFourBot{
             r = getScoreHelper(new ResponseCountDiscs(r2.getDisc(), r2.getCount()+r3.getCount()), disc, x);
             if(r.isCanWin()) return r;
             score += r.getScore();
+            System.out.println("DIAGONAL 2 "+r.getScore());
         }else{
             r = getScoreHelper(r2, disc, x);
             if(r.isCanWin()) return r;
             score += r.getScore();
-
+            int buff = r.getScore();
             r = getScoreHelper(r3, disc, x);
             if(r.isCanWin()) return r;
             score += r.getScore();
+            System.out.println("DIAGONAL 2 "+(buff+r.getScore()));
         }
         // Left Right check
         r2 = getCount(0, -1, y, x);
@@ -269,14 +276,16 @@ public class SmartBot implements ConnectFourBot{
             r = getScoreHelper(new ResponseCountDiscs(r2.getDisc(), r2.getCount()+r3.getCount()), disc, x);
             if(r.isCanWin()) return r;
             score += r.getScore();
+            System.out.println("LR "+r.getScore());
         }else{
             r = getScoreHelper(r2, disc, x);
             if(r.isCanWin()) return r;
             score += r.getScore();
-
+            int buff = r.getScore();
             r = getScoreHelper(r3, disc, x);
             if(r.isCanWin()) return r;
             score += r.getScore();
+            System.out.println("LR "+(buff+r.getScore()));
         }
         if(x==3) score+=SCORE_FOR_MIDDLE;
         if(x==2||x==4) score+=SCORE_FOR_SECOND_TO_MIDDLE;
